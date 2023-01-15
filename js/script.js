@@ -1,8 +1,9 @@
 'use strict';
 
-const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles';
+const optTitleSelector = '.post-title',
+  optTitleListSelector = '.titles',
+  optArticleSelector = '.post',
+  optArticleTagsSelector = '.post-tags .list';
 
 
 function titleClickHandler(event){
@@ -74,7 +75,7 @@ function generateTitleLinks (customSelector=''){
   /*[DONE]потім для кожної статті:
  /* for each article */
 
-  const allArticles = document.querySelectorAll('.post' + customSelector);
+  const allArticles = document.querySelectorAll(optArticleSelector + customSelector);
   let html = '';
   for(let article of allArticles){
 
@@ -93,7 +94,7 @@ find the title element*/
     /* [DONE]create HTML of the link */
 
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
-    console.log(linkHTML);
+    /*console.log(linkHTML);*/
     /* insert link into titleList */
     html = html + linkHTML;
   }
@@ -108,7 +109,137 @@ find the title element*/
 }
 generateTitleLinks ();
 
-/*------------------------------------------------------------------------------------------- */
+/*-------------------------------------TEGS------------------------------------------------------ */
+
+function generateTags(){
+  
+  
+  /* [DONE]find all articles */
+  const allArticles = document.querySelectorAll('.post'); /*Всі статті */
+  /*console.log(allArticles);*/
+
+  
+  
+  /* [DONE]START LOOP: for every article: */
+  for (let article of allArticles){
+  
+
+
+    /* [DONE]find tags wrapper */
+    const allTegs = article.querySelector('.post-tags'); 
+    /*console.log(allTegs);*/
+
+
+
+    /* [DONE]make html variable with empty string */
+    
+    let html = '';
+
+
+    /* [DONE] get tags from data-tags attribute */
+    const articleTags = article.getAttribute('data-tegs'); 
+    /*console.log(articleTags); */
+
+    /* [DONE]split tags into array */
+    const articleTagsArray = articleTags.split(' ');
+    /*console.log(articleTagsArray);*/
+
+
+
+
+    /* [DONE]START LOOP: for each tag */
+
+    for (let tag of articleTagsArray){
+
+      /*console.log(tag);/*
+
+      /* generate HTML of the link */
+      const htmlLinks = '<li><a href="#tag-' + tag + '">' + tag + '</a></li>'; 
+      /*console.log(htmlLinks);*/
+      /* add generated code to html variable */
+
+      const articleWithTegs = article.querySelector('.list');
+      console.log(articleWithTegs);
+
+      html = html + htmlLinks;
+
+      articleWithTegs.innerHTML = html;  /*Why can't insert into the tags wrapper?????????????????????????????It's work in console */    
+    
+    }
+  }
+
+
+  /* insert HTML of all the links into the tags wrapper */
+
+  /* END LOOP: for every article: */
+
+}
+generateTags();
+
+
+function tagClickHandler(event){
+
+  /* [DONE] prevent default action for this event */
+  event.preventDefault();
+
+
+  /* [DONE]make new constant named "clickedElement" and give it the value of "this" */
+  const clickedElement = this;
+
+  /* [DONE]make a new constant "href" and read the attribute "href" of the clicked element */
+  const href = clickedElement.getAttribute('href');
+  console.log(href);
+
+  /* [DONE]make a new constant "tag" and extract tag from the "href" constant */
+  const tag = href.replace('#tag-', '');
+  /* [DONE] find all tag links with class active */
+  const tagsActive = tag.querySelectorAll('a.active[href^="#tag-"]');
+
+  /* [DONE]START LOOP: for each active tag link */
+
+  for (let tag of tagsActive){
+    tag.classList.remove('a.active[href^="#tag-"]');
+  
+    /* [DONE]remove class active */
+
+    /* [DONE]END LOOP: for each active tag link */
+  }
+  /* [DONE]find all tag links with "href" attribute equal to the "href" constant */
+
+  const allHrefLinks = document.querySelectorAll('a[href="' + href + '"]');
+
+  /* START LOOP: for each found tag link */
+
+  for (let hrefLink of allHrefLinks){
+    hrefLink.classList.add('active');
+  }
+
+  /* [DONE]add class active */
+
+  /* END LOOP: for each found tag link */
+
+  /* execute function "generateTitleLinks" with article selector as argument */
+  generateTitleLinks('[data-tags~="' + tag + '"]');
+}
+
+function addClickListenersToTags(){
+  /* find all links to tags */
+
+  /* START LOOP: for each link */
+
+  /* add tagClickHandler as event listener for that link */
+
+  /* END LOOP: for each link */
+}
+
+addClickListenersToTags();
+
+/*----------------------------------AUTHORS----------------------------- */
+
+function generateAuthors(){
+
+
+}
 
 
 
