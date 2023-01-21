@@ -8,7 +8,10 @@ const optTitleSelector = '.post-title',
   optarticleAuthorSelector = '.post-author',
   optTagsListSelector = '.tags.list',
   optCloudClassCount = '5',
-  optCloudClassPrefix = 'tag-size-';
+  optCloudClassPrefix = 'tag-size-',
+  optAuthorssListSelector = '.list .authors';
+
+  
   
 
 
@@ -148,7 +151,7 @@ function generateTags(){
 
     /* [DONE]get tags from data-tags attribute */
     const articleTags = article.getAttribute('data-tags'); /*Теги для кожної статті, бо в функції */
-   // console.log(articleTags);
+   /*console.log(articleTags)*/
   
     /*[DONE]split tags into array */
     const articleTagsArray = articleTags.split(' ');
@@ -313,14 +316,20 @@ addClickListenersToTags();
 function generateAuthors(){
 
   const articles = document.querySelectorAll(optArticleSelector);
+  let allTagsAuthor = {};
+  let articleAuthorsPlace = [];
+
+
   /*console.log(articles);*/
   for (let article of articles){
     const articleWrappers = article.querySelector(optarticleAuthorSelector);
     /*console.log(articleWrappers)*/
     let html = '';
+    const authorTags = article.getAttribute('data-author'); 
+    articleAuthorsPlace.push(authorTags)
 
     const author = article.getAttribute('data-author');
-    /*console.log(author)(just name of author)*/
+    /*console.log(author)/*(just name of author)*/
 
     const authorHtml = 'By ' + '<a href=#'+ author + '>' + author + '</a>';
     /*console.log(authorHtml);*/
@@ -329,37 +338,35 @@ function generateAuthors(){
     /*console.log(articleWrappers)*/
     articleWrappers.innerHTML = html;
     /*console.log(articleWrappers)/*"By <a href=\"George Tuxedo\">George Tuxedo</a>"*/
-
-    
+  
   }
-}
+  for(let author of articleAuthorsPlace){
+    /*console.log(author);*/
+    if (!allTagsAuthor.hasOwnProperty(author)) {
+      allTagsAuthor[author] = 1;
+    } else {
+      allTagsAuthor[author]++;
+    }
+  }
+  /*console.log(allTagsAuthor);*/
 
+const authorList = document.querySelector('.list.authors');
+console.log(authorList)
+let authorHTML = '';
+
+for (let author in allTagsAuthor){
+authorHTML+= '<li><a href="'+ author + '">' + author + ' (' + allTagsAuthor[author] + ') ' +'</a></li>';
+  /*console.log(authorHTML);*/
+}//
+console.log(authorHTML)
+authorList.innerHTML = authorHTML;
+//onsole.log(authorList)
+}
 generateAuthors();
 
 /*---------------------------------------------------------------AUTHOR-CLICK-HANDLER------------------------------------------ */
-function authorClickHandler(event){
 
 
-  const allArticles = document.querySelectorAll(optArticleSelector)
-  const clickedElement = this;
-  console.log('link was clicked')
-  
-  for (let article of allArticles){
-    const articleWrapper = article.querySelector(optArticleAuthorSelector);
-    /*console.log(articleWrapper) post-author*/
-  
-  let html = '';
-        const authorTags = article.getAttribute('data-author');
-        const authorHTML = 'By ' + '<a href="'+ authorTags + '">' + authorTags + '</a>';
-        console.log(authorHTML)
-        html = html + authorHTML;
-        articleWrapper.innerHTML = html;
-        console.log(articleWrapper);
-  }
-  }
-  generateAuthors();
-  
-  /*---------------------------------------------------------------ADD-CLICK-LISTENERS-TO-AUTHORS------------------------------------------ */
   function authorClickHandler(event){
     event.preventDefault();
     const clickedElement = this;
@@ -406,7 +413,7 @@ function authorClickHandler(event){
     знайти всі посилання на теги */
     const tagLinks = document.querySelectorAll('.post-author a');
     // const tagLinks = document.querySelectorAll(optArticleTagsSelector);
-    // console.log(tagLinks);
+    /*console.log(tagLinks);*/
     /* START LOOP: for each link
     START LOOP: для кожного посилання */
     for(let tLink of tagLinks){
@@ -420,3 +427,8 @@ function authorClickHandler(event){
 
   addClickListenersToAuthors();
 
+
+
+  
+
+  
