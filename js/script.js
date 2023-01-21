@@ -119,7 +119,11 @@ find the title element*/
   }
 }
 generateTitleLinks ();
-/*-------------------------------------GENERATE-TITLE-LINKS---------------------------------------------------------------------- */
+/*-------------------------------------calculateTagsParams---------------------------------------------------------------------- */
+
+
+
+
 /*-------------------------------------GENERATE---TEGS-------------------------------------------------------------------------- */
 
 
@@ -187,6 +191,9 @@ function generateTags(){
  /*[NEW] find list of tags in right column */
 const tagList = document.querySelector(optTagsListSelector);
 
+const tagsParams = calculateTagsParams(allTags);
+console.log(tagsParams)
+
 /*[NEW] create variable for all links HTML code */
     let allTagsHTML = '';
 
@@ -201,8 +208,36 @@ for (let tag in allTags){
 
 tagList.innerHTML = allTagsHTML;
 
-  
+function calculateTagsParams(tags){
+  let params = {
+    min: 999999,
+    max: 0 };
+
+  for (let tag in tags){
+
+    if(tags[tag] > params.max){
+      params.max = tags[tag];}
+
+
+    if(tags[tag] < params.min){
+      params.min = tags[tag];
+    }
+
     
+
+
+    console.log(params.max, params.min)
+    
+    }
+    return params
+  }
+
+
+
+
+
+
+
   }
 generateTags();
 /*---------------------------------------------------------------GENERATE--TAGS--------------------------------------------------- */
