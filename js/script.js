@@ -7,6 +7,7 @@ const optTitleSelector = '.post-title',
   optArticleAuthorSelector = '.post-author',
   optarticleAuthorSelector = '.post-author',
   optTagsListSelector = '.tags.list';
+  
 
 
 /*------------------------------------TITLE-CLICK-HANDLER----------------------------------------------------------------------- */
@@ -108,6 +109,7 @@ find the title element*/
     html = html + linkHTML;
   }
   titleList.innerHTML = html;
+  /*console.log(titleList)*/
 
   
 
@@ -122,7 +124,9 @@ generateTitleLinks ();
 
 
 function generateTags(){
-  
+   /* [NEW] create a new variable allTags with an empty array */
+   let allTags = {};
+   /*console.log(allTags)*/
   /*[DONE] find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
   /*console.log(articles);*/
@@ -132,7 +136,7 @@ function generateTags(){
 
     /* [DONE]find tags wrapper */
     const articleWrapperForTags = article.querySelector(optArticleTagsSelector);
-
+  
     /* [DONE]make html variable with empty string */
     let html = '';
 
@@ -144,33 +148,62 @@ function generateTags(){
     const articleTagsArray = articleTags.split(' ');
     /*console.log(articleTagsArray);*/
 
-  
     /* [DONE]START LOOP: for each tag */
     for (let tag of articleTagsArray){
       /*console.log(htmlTegs);*/
-     
+
       /* [DONE]generate HTML of the link */
-      const htmlTegs = '<li><a href="#tag-' + tag + '">' + tag +'</a></li>';
-      /*console.log(htmlTegs);*/
+      const linkHTML = '<li><a href="#tag-' + tag + '">' + tag +'</a></li>';
+      /*console.log(linkHTML);*/
+
       /* [DONE]add generated code to html variable */
-
-
-
-      html = html+htmlTegs;
-      /*console.log(html);*/
-
-      /* [DONE]END LOOP: for each tag */
+          html = html+linkHTML;
+      /*console.log(html) html tegs of all articles with tegs*/
+ /* [NEW] check if this link is NOT already in allTags */
+ if (!allTags.hasOwnProperty(tag)){
+  allTags[tag] = 1;
+ } else {
+    allTags[tag]++;
+  }; /*функція, що шляхом перебору на виході дає цифру, що значить кількість повторень тега */
+  /*console.log(allTags)*/
+ 
+    /* [DONE]END LOOP: for each tag */
+    }
 
       /* insert HTML of all the links into the tags wrapper */
       articleWrapperForTags.innerHTML = html;
       /*console.log(articleWrapperForTags); */
-      /* [DONE]END LOOP: for every article: */
-    
-      const articleWithAdedTags = articleWrapperForTags;
-      /*console.log(articleWithAdedTags);*/
+        /* [DONE]END LOOP: for every article: */
+
     }
-  }
+   
+
+ 
+
+
+/*-------------------------------------ДОДАЄМО ЦИФРИ ДО ТЕГІВ ДЛЯ ПРАВОЇ КОЛОНКИ-------------------------------------------------------------------------- */
+
+
+ /*[NEW] find list of tags in right column */
+const tagList = document.querySelector(optTagsListSelector);
+
+/*[NEW] create variable for all links HTML code */
+    let allTagsHTML = '';
+
+/*[NEW] START LOOP: for each tag in allTags */
+for (let tag in allTags){
+  /*[NEW] generate code of a link and add it to allTagsHTML */
+  allTagsHTML +=  '<li><a href="#tag-' + tag + '">' + tag + ' (' + allTags[tag] + ') ' + ' </a></li>';
 }
+/*[NEW] END LOOP: for each tag in allTags: */
+
+/*[NEW] add html from allTagsHTML to tagList */
+
+tagList.innerHTML = allTagsHTML;
+
+  
+    
+  }
 generateTags();
 /*---------------------------------------------------------------GENERATE--TAGS--------------------------------------------------- */
 /*---------------------------------------------------------------TAG-CLICK-HANDLER-------------------------------------------------- */
@@ -352,3 +385,4 @@ function authorClickHandler(event){
   }
 
   addClickListenersToAuthors();
+
