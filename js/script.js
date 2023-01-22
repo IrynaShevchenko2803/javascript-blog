@@ -1,5 +1,11 @@
 'use strict';
 
+const templates = {
+  articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML)
+}
+
+
+
 const optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleSelector = '.post',
